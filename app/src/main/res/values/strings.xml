@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name" translatable="false">Advanced Alarm</string>
+
+    <string name="alarm_clocks">Alarms</string>
+    <string name="watch">Watch</string>
+
+    <string name="settings">Settings</string>
+    <string name="create_new_alarm">Create New Alarm</string>
+    <string name="theme">Theme</string>
+    <string name="language">Language</string>
+    <string name="visual_settings">Visual</string>
+    <string name="text_settings">Text</string>
+    <string name="volume">Volume</string>
+    <string name="vibration">Vibration</string>
+    <string name="create">Create</string>
+    <string name="alarm_name">Name</string>
+    <string name="ringtone">Ringtone</string>
+    <string name="save">Save</string>
+    <string name="complete">Complete</string>
+    <string name="change_alarm">Change alarm</string>
+
+    <string-array name="themes">
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+    <string-array name="theme_values">
+        <item>default</item>
+        <item>dark</item>
+    </string-array>
+
+    <string-array name="language">
+        <item>English</item>
+        <item>Russian</item>
+    </string-array>
+    <string-array name="language_values">
+        <item>default</item>
+        <item>ru</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="alarm_clocks">Будильники</string>
+    <string name="create_new_alarm">Создать новый будильник</string>
+    <string name="language">Язык</string>
+    <string name="settings">Настройки</string>
+    <string name="theme">Тема</string>
+    <string name="watch">Часы</string>
+    <string name="text_settings">Текст</string>
+    <string name="visual_settings">Внешний вид</string>
+    <string name="volume">Громкость</string>
+    <string name="vibration">Вибрация</string>
+    <string name="create">Создать</string>
+    <string name="alarm_name">Имя</string>
+    <string name="ringtone">Рингтон</string>
+    <string name="save">Сохранить</string>
+    <string name="change_alarm">Изменить будильник</string>
+    <string name="complete">Завершить</string>
+
+</resources>

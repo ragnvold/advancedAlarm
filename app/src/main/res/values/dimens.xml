@@ -1,0 +1,26 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="alarm_top">16dp</dimen>
+    <dimen name="alarm_bottom">16dp</dimen>
+    <dimen name="alarm_start">16dp</dimen>
+    <dimen name="alarm_end">16dp</dimen>
+
+    <dimen name="alert_top">8dp</dimen>
+    <dimen name="alert_bottom">8dp</dimen>
+    <dimen name="alert_start">16dp</dimen>
+    <dimen name="alert_end">16dp</dimen>
+
+    <dimen name="fab_bottom">20dp</dimen>
+    <dimen name="fab_end">20dp</dimen>
+
+    <dimen name="alarm_seekBar_top">20dp</dimen>
+    <dimen name="alarm_seekBar_bottom">20dp</dimen>
+    <dimen name="alarm_seekBar_start">30dp</dimen>
+    <dimen name="alarm_seekBar_end">30dp</dimen>
+
+    <dimen name="textClock_fontSize">20sp</dimen>
+    <dimen name="digitalClock_fontSize">40sp</dimen>
+</resources>
