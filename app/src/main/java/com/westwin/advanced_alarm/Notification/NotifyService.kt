@@ -70,12 +70,13 @@ class NotifyService : IntentService("Alarm") {
                 )
             )
 
-        if(alarm.vibration) {
+        if (alarm.vibration)
             builder.setDefaults(Notification.DEFAULT_VIBRATE)
-        }
-        if (alarm.ringtone == "") {
+
+        if (Uri.parse(alarm.ringtone) == Uri.EMPTY)
             builder.setDefaults(Notification.DEFAULT_SOUND)
-        }
+        else
+            builder.setSound(Uri.parse(alarm.ringtone))
 
         notificationManager
             .notify(

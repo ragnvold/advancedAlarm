@@ -12,11 +12,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.westwin.advanced_alarm.Adapters.AlarmAdapter
 import com.westwin.advanced_alarm.Alarm.*
 import com.westwin.advanced_alarm.R
-import com.westwin.advanced_alarm.Alarm.Alarm
+import com.westwin.advanced_alarm.Models.Alarm
 import com.westwin.advanced_alarm.Contracts.AlarmContract
 import com.westwin.advanced_alarm.Notification.NotifyService
 import com.westwin.advanced_alarm.Views.Activities.AlarmConstructorActivity
@@ -75,6 +77,22 @@ class AlarmFragment : Fragment(), AlarmContract.View {
         recyclerView.adapter = alarmAdapter
     }
 
+    override fun attachListener() {
+        val callback = object: ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean = false
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                alarmAdapter.notifyItemRemoved(viewHolder.adapterPosition)
+            }
+        }
+        val myHelper = ItemTouchHelper(callback)
+        myHelper.attachToRecyclerView(recyclerView)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         LocalBroadcastManager.getInstance(activity!!).unregisterReceiver(alarmReceiver)
@@ -107,7 +125,7 @@ class AlarmFragment : Fragment(), AlarmContract.View {
         private lateinit var alarmUtil: AlarmUtil
 
         override fun itemPositionChecker(view: View): Int {
-            return recyclerView.getChildAdapterPosition(view)
+            return recyclerView.getChildLayoutPosition(view)
         }
     }
 
@@ -123,7 +141,7 @@ class AlarmFragment : Fragment(), AlarmContract.View {
 
         override fun onReceive(p0: Context?, p1: Intent?) {
             val alarm = AlarmUtil.readAlarm(p1!!.extras!!)
-            alarmAdapter.deleteAlarm(alarm)
+            alarmAdapter.deactivateAlarm(alarm)
         }
     }
 }

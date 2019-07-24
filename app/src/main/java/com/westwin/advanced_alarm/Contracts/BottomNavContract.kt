@@ -20,5 +20,6 @@ interface BottomNavContract {
         fun onBottomAlarmsFragmentWasClicked()
         fun onSettingsOptionItemWasClicked()
         fun onAlarmConstructorOptionItemWasClicked()
+        fun onBottomSocialsFragmentWasClicked()
     }
 }

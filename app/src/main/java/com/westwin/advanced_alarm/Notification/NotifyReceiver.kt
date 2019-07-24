@@ -4,7 +4,7 @@ import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.westwin.advanced_alarm.Alarm.Alarm
+import com.westwin.advanced_alarm.Models.Alarm
 import com.westwin.advanced_alarm.Alarm.AlarmUtil
 
 class NotifyReceiver : BroadcastReceiver() {

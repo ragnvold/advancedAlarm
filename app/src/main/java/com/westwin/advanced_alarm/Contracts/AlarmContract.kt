@@ -7,6 +7,7 @@ interface AlarmContract {
         fun attachView(view: android.view.View)
         fun addComponents()
         fun attachAdapter()
+        fun attachListener()
     }
 
     interface Presenter {

@@ -15,9 +15,10 @@ import com.westwin.advanced_alarm.Views.Fragments.WatchFragment
 import com.westwin.advanced_alarm.R
 import com.westwin.advanced_alarm.Diff.PreferenceUtils
 import com.westwin.advanced_alarm.Presenters.BottomNavPresenter
+import com.westwin.advanced_alarm.Views.Fragments.SocialsFragment
 
 class BottomNavActivity : AppCompatActivity(), WatchFragment.OnFragmentInteractionListener,
-    AlarmFragment.OnFragmentInteractionListener, Toolbar.OnMenuItemClickListener, BottomNavContract.View {
+    AlarmFragment.OnFragmentInteractionListener, SocialsFragment.OnFragmentInteractionListener, Toolbar.OnMenuItemClickListener, BottomNavContract.View {
 
     private var mPresenter: BottomNavContract.Presenter = BottomNavPresenter(this)
 
@@ -31,6 +32,11 @@ class BottomNavActivity : AppCompatActivity(), WatchFragment.OnFragmentInteracti
             R.id.navigation_alarms -> {
                 loadFragment(AlarmFragment())
                 mPresenter.onBottomAlarmsFragmentWasClicked()
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_socials -> {
+                loadFragment(SocialsFragment())
+                mPresenter.onBottomSocialsFragmentWasClicked()
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -57,7 +63,7 @@ class BottomNavActivity : AppCompatActivity(), WatchFragment.OnFragmentInteracti
                 getString(R.string.alarm_clocks)
             }
             else -> {
-                ""
+                getString(R.string.socials)
             }
         }
     }

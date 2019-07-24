@@ -1,4 +1,4 @@
-package com.westwin.advanced_alarm.Alarm
+package com.westwin.advanced_alarm.Models
 
 import org.json.JSONException
 import org.json.JSONObject

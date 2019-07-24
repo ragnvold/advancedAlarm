@@ -12,6 +12,10 @@ class BottomNavPresenter(private var mView: BottomNavContract.View): BottomNavCo
         mView.setFragmentTitle(0)
     }
 
+    override fun onBottomSocialsFragmentWasClicked() {
+        mView.setFragmentTitle(2)
+    }
+
     override fun initialize() {
         mView.attachView()
         mView.attachInflater()

@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import com.westwin.advanced_alarm.Models.Alarm
 import com.westwin.advanced_alarm.Notification.NotifyService
 import java.util.*
 
@@ -34,34 +36,9 @@ class AlarmUtil(context: Context) {
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT
             )
-        val alarmTime = Calendar.getInstance()
-        alarmTime.set(
-            Calendar.MONTH,
-            alarmTime.get(
-                Calendar.MONTH
-            )
-        )
-        alarmTime.set(
-            Calendar.DAY_OF_MONTH,
-            alarmTime.get(
-                Calendar.DAY_OF_MONTH
-            )
-        )
-        alarmTime.set(
-            Calendar.HOUR,
-            alarm.hour
-        )
-        alarmTime.set(
-            Calendar.MINUTE,
-            alarm.minute
-        )
-        alarmTime.set(
-            Calendar.SECOND,
-            0
-        )
 
         val alarmClockInfo = AlarmManager.AlarmClockInfo(
-            alarmTime.timeInMillis,
+            getNextAlarmTime(alarm.hour, alarm.minute).timeInMillis,
             pendingIntent
         )
         alarmManager.setAlarmClock(
@@ -80,29 +57,27 @@ class AlarmUtil(context: Context) {
             ),
             PendingIntent.FLAG_UPDATE_CURRENT
         )
+        Log.i("TAG", "Alarm is canceled")
         alarmManager.cancel(pendingIntent)
     }
 
-    fun getNextAlarmTime(
+    private fun getNextAlarmTime(
         hour: Int,
         minute: Int
     ): Calendar {
         val alarmTime = Calendar.getInstance()
+        alarmTime.set(Calendar.DATE, alarmTime.get(Calendar.DATE))
         alarmTime.set(
-            Calendar.MONTH,
-            alarmTime.get(Calendar.MONTH)
-        )
-        alarmTime.set(
-            Calendar.DAY_OF_MONTH,
-            alarmTime.get(Calendar.DAY_OF_MONTH)
-        )
-        alarmTime.set(
-            Calendar.HOUR,
+            Calendar.HOUR_OF_DAY,
             hour
         )
         alarmTime.set(
             Calendar.MINUTE,
             minute
+        )
+        alarmTime.set(
+            Calendar.SECOND,
+            0
         )
         if ((alarmTime.timeInMillis - System.currentTimeMillis()) <= 0) {
             alarmTime.add(
@@ -110,6 +85,7 @@ class AlarmUtil(context: Context) {
                 1
             )
         }
+        Log.i("TAG", alarmTime.time.toString())
         return alarmTime
     }
 

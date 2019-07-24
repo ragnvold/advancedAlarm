@@ -13,16 +13,14 @@ import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
-import com.westwin.advanced_alarm.Alarm.Alarm
+import com.westwin.advanced_alarm.Models.Alarm
 import com.westwin.advanced_alarm.Alarm.AlarmStorage
-import com.westwin.advanced_alarm.Alarm.AlarmUtil
 import com.westwin.advanced_alarm.Contracts.AlarmConstructorContract
 import com.westwin.advanced_alarm.Views.Fragments.AlarmFragment
 import com.westwin.advanced_alarm.R
 import com.westwin.advanced_alarm.Diff.PreferenceUtils
 import com.westwin.advanced_alarm.Presenters.AlarmConstructorPresenter
 import java.security.SecureRandom
-import java.util.*
 
 class AlarmConstructorActivity : AppCompatActivity(), View.OnClickListener, AlarmConstructorContract.View {
 
@@ -52,6 +50,8 @@ class AlarmConstructorActivity : AppCompatActivity(), View.OnClickListener, Alar
         volumeSeekBar = findViewById(R.id.seekBar_volume)
         vibrationSwitch = findViewById(R.id.vibrationSwitch)
         ringtonePicker = findViewById(R.id.ringtone)
+
+        timePicker.setIs24HourView(true)
     }
 
     override fun attachListener() {
@@ -136,12 +136,6 @@ class AlarmConstructorActivity : AppCompatActivity(), View.OnClickListener, Alar
     }
 
     override fun alarmAccept() {
-        val alarmTime = AlarmUtil(
-            applicationContext
-        ).getNextAlarmTime(
-            timePicker.hour,
-            timePicker.minute
-        )
         val id = when (alarmID) {
             0 -> {
                 SecureRandom().nextInt()
@@ -152,8 +146,8 @@ class AlarmConstructorActivity : AppCompatActivity(), View.OnClickListener, Alar
         }
         val alarmStorage = AlarmStorage(applicationContext).saveAlarm(
             id,
-            alarmTime.get(Calendar.HOUR),
-            alarmTime.get(Calendar.MINUTE),
+            timePicker.hour,
+            timePicker.minute,
             etName.text.toString(),
             volumeSeekBar.progress,
             vibrationSwitch.isChecked,

@@ -1,21 +1,23 @@
-package com.westwin.advanced_alarm.Alarm
+package com.westwin.advanced_alarm.Adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Switch
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SortedList
+import com.westwin.advanced_alarm.Models.Alarm
+import com.westwin.advanced_alarm.Alarm.AlarmStorage
+import com.westwin.advanced_alarm.Alarm.AlarmUtil
 import com.westwin.advanced_alarm.Views.Activities.AlarmConstructorActivity
 import com.westwin.advanced_alarm.Views.Fragments.AlarmFragment
 import com.westwin.advanced_alarm.R
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.*
 
 class AlarmAdapter(context: Context, alarms: Set<Alarm>) : RecyclerView.Adapter<AlarmAdapter.ViewHolder>(),
     View.OnClickListener {
@@ -28,7 +30,10 @@ class AlarmAdapter(context: Context, alarms: Set<Alarm>) : RecyclerView.Adapter<
     //constructors
 
     init {
-        mAlarmList = SortedList(Alarm::class.java, SortedListCallback())
+        mAlarmList = SortedList(
+            Alarm::class.java,
+            SortedListCallback()
+        )
         mAlarmList.addAll(alarms)
         mContext = context
         mAlarmStorage = AlarmStorage(context)
@@ -41,8 +46,10 @@ class AlarmAdapter(context: Context, alarms: Set<Alarm>) : RecyclerView.Adapter<
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.txtClk.text = "${mAlarmList[position].hour}:${getMinutes(mAlarmList[position].minute)}"
         holder.alarmName.text = mAlarmList[position].name
+        holder.alarmActive.isChecked = mAlarmList[position].isActive
 
         holder.itemView.setOnClickListener(this)
+        holder.alarmActive.setOnClickListener(this)
     }
 
     private fun getMinutes(minutes: Int): String {
@@ -54,7 +61,7 @@ class AlarmAdapter(context: Context, alarms: Set<Alarm>) : RecyclerView.Adapter<
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.item,
+                R.layout.alarms_item,
                 parent,
                 false
             )
@@ -62,16 +69,34 @@ class AlarmAdapter(context: Context, alarms: Set<Alarm>) : RecyclerView.Adapter<
     }
 
     override fun onClick(p0: View?) {
-        val intent = Intent(
-            mContext.applicationContext,
-            AlarmConstructorActivity::class.java
-        )
-        if (p0 != null)
-            intent.putExtra(
-                "alarm",
-                mAlarmList[AlarmFragment.itemPositionChecker(p0)].toJSON()
-            )
-        mContext.startActivity(intent)
+        if (p0 != null) {
+            val pos = AlarmFragment.itemPositionChecker(p0.parent as View)
+            when (p0.id) {
+                R.id.alarm_activeRV -> {
+                    when (mAlarmList[pos].isActive) {
+                        true -> {
+                            deactivateAlarm(mAlarmList[pos])
+                        }
+                        false -> {
+                            activateAlarm(mAlarmList[pos])
+                        }
+                    }
+                    mAlarmList[pos].isActive =
+                        !mAlarmList[pos].isActive
+                }
+                else -> {
+                    val intent = Intent(
+                        mContext.applicationContext,
+                        AlarmConstructorActivity::class.java
+                    )
+                    intent.putExtra(
+                        "alarm",
+                        mAlarmList[pos].toJSON()
+                    )
+                    mContext.startActivity(intent)
+                }
+            }
+        }
     }
 
     fun addAlarm(alarm: Alarm) {
@@ -79,14 +104,39 @@ class AlarmAdapter(context: Context, alarms: Set<Alarm>) : RecyclerView.Adapter<
         notifyDataSetChanged()
     }
 
-    fun deleteAlarm(alarm: Alarm) {
-        mAlarmList.remove(alarm)
+    fun deactivateAlarm(alarm: Alarm) {
+        mAlarmStorage!!.saveAlarm(
+            alarm.id,
+            alarm.hour,
+            alarm.minute,
+            alarm.name,
+            alarm.volume,
+            alarm.vibration,
+            alarm.ringtone,
+            false
+        )
+        mAlarmUtil!!.cancelAlarm(alarm)
         notifyDataSetChanged()
+    }
+
+    private fun activateAlarm(alarm: Alarm) {
+        mAlarmStorage!!.saveAlarm(
+            alarm.id,
+            alarm.hour,
+            alarm.minute,
+            alarm.name,
+            alarm.volume,
+            alarm.vibration,
+            alarm.ringtone,
+            true
+        )
+        mAlarmUtil!!.scheduleAlarm(alarm)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var txtClk: TextView = itemView.findViewById(R.id.txtClkRV)
         var alarmName: TextView = itemView.findViewById(R.id.alarm_nameRV)
+        var alarmActive: Switch = itemView.findViewById(R.id.alarm_activeRV)
     }
 
     class SortedListCallback : SortedList.Callback<Alarm>() {
