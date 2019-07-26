@@ -20,6 +20,7 @@ import org.json.JSONObject
 import com.facebook.FacebookException
 import com.facebook.login.LoginResult
 import com.facebook.FacebookCallback
+import com.vk.api.sdk.auth.VKScope
 
 class SocialsAuthActivity : AppCompatActivity() {
 
@@ -31,7 +32,7 @@ class SocialsAuthActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         when (intent.getIntExtra("id", -1)) {
             0 -> {
-                VK.login(this)
+                VK.login(this, arrayListOf(VKScope.WALL))
             }
             1 -> {
                 LoginManager.getInstance().logIn(this, null)

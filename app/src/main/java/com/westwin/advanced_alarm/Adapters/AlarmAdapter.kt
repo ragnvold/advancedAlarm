@@ -19,7 +19,7 @@ import com.vk.api.sdk.requests.VKRequest
 import com.westwin.advanced_alarm.Models.Alarm
 import com.westwin.advanced_alarm.Alarm.AlarmStorage
 import com.westwin.advanced_alarm.Alarm.AlarmUtil
-import com.westwin.advanced_alarm.Diff.VKUserRequest
+import com.westwin.advanced_alarm.Models.Social
 import com.westwin.advanced_alarm.R
 import com.westwin.advanced_alarm.Views.Activities.AlarmConstructorActivity
 import org.json.JSONObject
@@ -65,9 +65,9 @@ class AlarmAdapter(context: Context, alarms: Set<Alarm>) : RecyclerView.Adapter<
             mContext.startActivity(intent)
         }
         holder.alarmShare.setOnClickListener{
-            VK.execute(VKRequest<JSONObject>("wall.post").addParam("owner_id", 106094781).addParam("friends_only", 1).addParam("message", "YES"), object : VKApiCallback<JSONObject> {
+            VK.execute(VKRequest<JSONObject>("wall.post").addParam("owner_id", 106094781).addParam("friends_only", 1).addParam("message", "Я поставил будильник на ${mAlarmList[position].hour}:${getMinutes(mAlarmList[position].minute)}"), object : VKApiCallback<JSONObject> {
                 override fun success(result: JSONObject) {
-                    Log.i("TAG", "success")
+                    Log.i("TAG", result.toString())
                 }
 
                 override fun fail(error: VKApiExecutionException) {
