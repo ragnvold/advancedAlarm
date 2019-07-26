@@ -5,4 +5,6 @@ import android.view.View
 interface RecyclerViewListener {
 
     fun itemPositionChecker(view: View): Int
+
+    fun updateRVData()
 }

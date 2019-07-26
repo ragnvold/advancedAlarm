@@ -11,4 +11,9 @@
             android:icon="@drawable/ic_dashboard_black_24dp"
             android:title="@string/alarm_clocks"/>
 
+    <item
+        android:id="@+id/navigation_socials"
+        android:icon="@drawable/ic_notifications_black_24dp"
+        android:title="@string/socials"/>
+
 </menu>

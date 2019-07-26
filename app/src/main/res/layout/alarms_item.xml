@@ -19,14 +19,22 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/textClock_fontSize"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toEndOf="@id/alarm_sharing"/>
 
     <TextView
             android:id="@+id/alarm_nameRV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/txtClkRV"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toEndOf="@id/alarm_sharing"/>
+
+    <Button
+            android:id="@+id/alarm_sharing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
     <Switch
             android:id="@+id/alarm_activeRV"

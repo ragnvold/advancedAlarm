@@ -18,6 +18,16 @@
     <string name="save">Save</string>
     <string name="complete">Complete</string>
     <string name="change_alarm">Change alarm</string>
+    <string name="socials">Socials</string>
+    <string name="vk">VK</string>
+    <string name="auth">Click to auth</string>
+    <string name="fb" translatable="false">Facebook</string>
+
+    <integer name="com_vk_sdk_AppId">7072020</integer>
+
+    <string name="facebook_app_id" translatable="false">349396512627886</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb349396512627886</string>
+
 
     <string-array name="themes">
         <item>Light</item>

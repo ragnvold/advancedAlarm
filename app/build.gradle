@@ -9,7 +9,7 @@ android {
     buildToolsVersion "29.0.0"
     defaultConfig {
         applicationId "com.westwin.advanced_alarm"
-        minSdkVersion 23
+        minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -35,6 +35,9 @@ dependencies {
     implementation 'androidx.legacy:legacy-preference-v14:1.0.0'
     implementation 'com.github.akndmr:ColorPrefUtil:1.0.1'
     implementation 'com.kevalpatel2106:ringtonepicker:1.2'
+    implementation 'com.vk:androidsdk:2.1.1'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.facebook.android:facebook-login:5.1.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

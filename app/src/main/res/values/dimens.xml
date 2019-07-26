@@ -23,4 +23,6 @@
 
     <dimen name="textClock_fontSize">20sp</dimen>
     <dimen name="digitalClock_fontSize">40sp</dimen>
+    <dimen name="socials_item_horizontal">50dp</dimen>
+    <dimen name="socials_item_vertical">10dp</dimen>
 </resources>

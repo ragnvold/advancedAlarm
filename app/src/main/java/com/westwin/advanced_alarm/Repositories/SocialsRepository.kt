@@ -1,4 +1,7 @@
 package com.westwin.advanced_alarm.Repositories
 
-class SocialsRepository {
+import com.westwin.advanced_alarm.Contracts.SocialsContract
+
+class SocialsRepository: SocialsContract.Repository {
+
 }

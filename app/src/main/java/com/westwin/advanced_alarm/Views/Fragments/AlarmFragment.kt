@@ -127,6 +127,10 @@ class AlarmFragment : Fragment(), AlarmContract.View {
         override fun itemPositionChecker(view: View): Int {
             return recyclerView.getChildLayoutPosition(view)
         }
+
+        override fun updateRVData() {
+            alarmAdapter.notifyDataSetChanged()
+        }
     }
 
     class AlarmAddListenerImpl : AlarmConstructorActivity.AlarmAddListener {

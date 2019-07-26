@@ -7,20 +7,24 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Switch
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SortedList
+import com.vk.api.sdk.VK
+import com.vk.api.sdk.VKApiCallback
+import com.vk.api.sdk.exceptions.VKApiExecutionException
+import com.vk.api.sdk.requests.VKRequest
 import com.westwin.advanced_alarm.Models.Alarm
 import com.westwin.advanced_alarm.Alarm.AlarmStorage
 import com.westwin.advanced_alarm.Alarm.AlarmUtil
-import com.westwin.advanced_alarm.Views.Activities.AlarmConstructorActivity
-import com.westwin.advanced_alarm.Views.Fragments.AlarmFragment
+import com.westwin.advanced_alarm.Diff.VKUserRequest
 import com.westwin.advanced_alarm.R
+import com.westwin.advanced_alarm.Views.Activities.AlarmConstructorActivity
+import org.json.JSONObject
 
-class AlarmAdapter(context: Context, alarms: Set<Alarm>) : RecyclerView.Adapter<AlarmAdapter.ViewHolder>(),
-    View.OnClickListener {
+class AlarmAdapter(context: Context, alarms: Set<Alarm>) : RecyclerView.Adapter<AlarmAdapter.ViewHolder>() {
 
     private var mAlarmList: SortedList<Alarm>
     private var mAlarmStorage: AlarmStorage? = null
@@ -47,9 +51,42 @@ class AlarmAdapter(context: Context, alarms: Set<Alarm>) : RecyclerView.Adapter<
         holder.txtClk.text = "${mAlarmList[position].hour}:${getMinutes(mAlarmList[position].minute)}"
         holder.alarmName.text = mAlarmList[position].name
         holder.alarmActive.isChecked = mAlarmList[position].isActive
+        holder.alarmShare.text = "Share"
 
-        holder.itemView.setOnClickListener(this)
-        holder.alarmActive.setOnClickListener(this)
+        holder.itemView.setOnClickListener {
+            val intent = Intent(
+                mContext.applicationContext,
+                AlarmConstructorActivity::class.java
+            )
+            intent.putExtra(
+                "alarm",
+                mAlarmList[position].toJSON()
+            )
+            mContext.startActivity(intent)
+        }
+        holder.alarmShare.setOnClickListener{
+            VK.execute(VKRequest<JSONObject>("wall.post").addParam("owner_id", 106094781).addParam("friends_only", 1).addParam("message", "YES"), object : VKApiCallback<JSONObject> {
+                override fun success(result: JSONObject) {
+                    Log.i("TAG", "success")
+                }
+
+                override fun fail(error: VKApiExecutionException) {
+                    Log.i("TAG", error.localizedMessage)
+                }
+            })
+        }
+        holder.alarmActive.setOnClickListener {
+            when (mAlarmList[position].isActive) {
+                true -> {
+                    deactivateAlarm(mAlarmList[position])
+                }
+                false -> {
+                    activateAlarm(mAlarmList[position])
+                }
+            }
+            mAlarmList[position].isActive =
+                !mAlarmList[position].isActive
+        }
     }
 
     private fun getMinutes(minutes: Int): String {
@@ -66,37 +103,6 @@ class AlarmAdapter(context: Context, alarms: Set<Alarm>) : RecyclerView.Adapter<
                 false
             )
         )
-    }
-
-    override fun onClick(p0: View?) {
-        if (p0 != null) {
-            val pos = AlarmFragment.itemPositionChecker(p0.parent as View)
-            when (p0.id) {
-                R.id.alarm_activeRV -> {
-                    when (mAlarmList[pos].isActive) {
-                        true -> {
-                            deactivateAlarm(mAlarmList[pos])
-                        }
-                        false -> {
-                            activateAlarm(mAlarmList[pos])
-                        }
-                    }
-                    mAlarmList[pos].isActive =
-                        !mAlarmList[pos].isActive
-                }
-                else -> {
-                    val intent = Intent(
-                        mContext.applicationContext,
-                        AlarmConstructorActivity::class.java
-                    )
-                    intent.putExtra(
-                        "alarm",
-                        mAlarmList[pos].toJSON()
-                    )
-                    mContext.startActivity(intent)
-                }
-            }
-        }
     }
 
     fun addAlarm(alarm: Alarm) {
@@ -131,12 +137,14 @@ class AlarmAdapter(context: Context, alarms: Set<Alarm>) : RecyclerView.Adapter<
             true
         )
         mAlarmUtil!!.scheduleAlarm(alarm)
+        notifyDataSetChanged()
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var txtClk: TextView = itemView.findViewById(R.id.txtClkRV)
         var alarmName: TextView = itemView.findViewById(R.id.alarm_nameRV)
         var alarmActive: Switch = itemView.findViewById(R.id.alarm_activeRV)
+        var alarmShare: Button = itemView.findViewById(R.id.alarm_sharing)
     }
 
     class SortedListCallback : SortedList.Callback<Alarm>() {

@@ -6,9 +6,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.Context
 import android.net.Uri
-import android.os.VibrationEffect
+import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.westwin.advanced_alarm.Alarm.AlarmStorage
 import com.westwin.advanced_alarm.Alarm.AlarmUtil
@@ -46,8 +45,12 @@ class NotifyService : IntentService("Alarm") {
             alarm.toJSON()
         )
 
-        val notificationManager = context
-            .getSystemService(NotificationManager::class.java)
+        val notificationManager = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            context
+                .getSystemService(NotificationManager::class.java)
+        } else {
+            context.getSystemService(NotificationManager::class.java)
+        }
         val builder = NotificationCompat.Builder(context)
             .setSmallIcon(R.drawable.ic_notifications_black_24dp)
             .setCategory(Notification.CATEGORY_ALARM)

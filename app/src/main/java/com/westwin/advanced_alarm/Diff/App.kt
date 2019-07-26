@@ -8,6 +8,11 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import com.facebook.FacebookSdk
+import com.facebook.appevents.AppEventsLogger
+import com.vk.api.sdk.VK
+import com.vk.api.sdk.VKTokenExpiredHandler
 import com.westwin.advanced_alarm.Alarm.AlarmReceiver
 
 class App : Application(), Application.ActivityLifecycleCallbacks {
@@ -18,6 +23,15 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
         super.onCreate()
         registerReceiver(AlarmReceiver(), IntentFilter(Intent.ACTION_USER_PRESENT))
         createNotificationChannel()
+        VK.addTokenExpiredHandler(tokenTracker)
+        FacebookSdk.sdkInitialize(applicationContext)
+        AppEventsLogger.activateApp(this)
+    }
+
+    private val tokenTracker = object : VKTokenExpiredHandler {
+        override fun onTokenExpired() {
+            Log.i("APP", "Token expired")
+        }
     }
 
     override fun onActivityCreated(p0: Activity, p1: Bundle?) {

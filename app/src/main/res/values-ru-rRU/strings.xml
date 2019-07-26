@@ -16,5 +16,8 @@
     <string name="save">Сохранить</string>
     <string name="change_alarm">Изменить будильник</string>
     <string name="complete">Завершить</string>
+    <string name="socials">Соц. сети</string>
+    <string name="auth">Нажмите, чтобы войти</string>
+    <string name="vk">ВКонтакте</string>
 
 </resources>
